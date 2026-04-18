@@ -12,7 +12,6 @@ export default function SearchBar() {
   const timerRef  = useRef(null);
   const wrapRef   = useRef(null);
 
-  // Debounced search
   useEffect(() => {
     clearTimeout(timerRef.current);
     if (!query.trim()) { setResults([]); setOpen(false); return; }
@@ -31,7 +30,6 @@ export default function SearchBar() {
     }, 400);
   }, [query]);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handler = (e) => {
       if (wrapRef.current && !wrapRef.current.contains(e.target)) {
@@ -51,8 +49,7 @@ export default function SearchBar() {
   return (
     <div className={styles.wrapper} ref={wrapRef}>
       <div className={styles.inputRow}>
-        {/* Search icon */}
-        <svg
+          <svg
           className={styles.icon}
           width="16"
           height="16"
@@ -78,7 +75,6 @@ export default function SearchBar() {
         {loading && <span className={styles.spinner} aria-label="Loading" />}
       </div>
 
-      {/* Dropdown */}
       {open && results.length > 0 && (
         <ul className={styles.dropdown} role="listbox">
           {results.map((match) => {

@@ -28,29 +28,25 @@ export default function StockDetailPage() {
     removeFromPortfolio,
   } = useApp();
 
-  // Stock data
   const [quote,   setQuote]   = useState(null);
   const [history, setHistory] = useState([]);
   const [news,    setNews]    = useState([]);
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState(null);
 
-  // Portfolio modal
   const [showModal, setShowModal] = useState(false);
   const [shares,    setShares]    = useState(1);
 
-  // Chat
   const [messages,  setMessages]  = useState([]);
   const [chatInput, setChatInput] = useState('');
   const [userCount, setUserCount] = useState(1);
   const chatEndRef = useRef(null);
 
-  const formatted    = formatQuote(quote);
-  const inWatchlist  = isInWatchlist(upperSymbol);
-  const inPortfolio  = !!portfolio[upperSymbol];
-  const isPositive   = formatted ? formatted.change >= 0 : true;
+  const formatted   = formatQuote(quote);
+  const inWatchlist = isInWatchlist(upperSymbol);
+  const inPortfolio = !!portfolio[upperSymbol];
+  const isPositive  = formatted ? formatted.change >= 0 : true;
 
-  // load stock data
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
@@ -77,7 +73,6 @@ export default function StockDetailPage() {
     return () => { cancelled = true; };
   }, [upperSymbol]);
 
-  // chat socket
   useEffect(() => {
     const roomId = `stock-${upperSymbol}`;
     socketService.connect();
@@ -103,12 +98,10 @@ export default function StockDetailPage() {
     };
   }, [upperSymbol, username]);
 
-  // Scroll chat to bottom on new messages
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // handlers
   const handleWatchlist = () => {
     inWatchlist
       ? removeFromWatchlist(upperSymbol)
@@ -135,7 +128,6 @@ export default function StockDetailPage() {
     setChatInput('');
   };
 
-  // custom tooltip for the price chart
   const ChartTooltip = ({ active, payload, label }) => {
     if (!active || !payload?.length) return null;
     return (
@@ -226,7 +218,6 @@ export default function StockDetailPage() {
 
       <div className={styles.layout}>
         <div>
-          {/* Historical price chart */}
           <section className="card" aria-labelledby="chart-heading">
             <h2 id="chart-heading" className={styles.sectionTitle}>
               Historical Performance (30 Days)
@@ -288,7 +279,6 @@ export default function StockDetailPage() {
             )}
           </section>
 
-          {/* Related news */}
           <section
             aria-labelledby="news-heading"
             style={{ marginTop: 20 }}
@@ -319,7 +309,6 @@ export default function StockDetailPage() {
               <span className={styles.userCount}>{userCount} online</span>
             </h2>
 
-            {/* Message list */}
             <div className={styles.messages} role="log" aria-live="polite">
               {messages.length === 0 && (
                 <p className={styles.chatEmpty}>
@@ -345,7 +334,6 @@ export default function StockDetailPage() {
               <div ref={chatEndRef} />
             </div>
 
-            {/* Input */}
             <form onSubmit={handleSendMessage} className={styles.chatForm}>
               <input
                 type="text"

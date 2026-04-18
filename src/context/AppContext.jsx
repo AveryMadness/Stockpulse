@@ -1,23 +1,12 @@
 import { createContext, useContext, useState, useCallback } from 'react';
 
-/**
- * AppContext
- *
- * Provides global state for:
- *   - watchlist  : array of ticker symbols the user is watching
- *   - portfolio  : map of symbol → { shares: number }
- *   - username   : display name used in chat rooms
- */
 const AppContext = createContext(null);
 
 export const AppProvider = ({ children }) => {
-  // ---------- state ----------
   const [watchlist, setWatchlist] = useState([]);
   const [portfolio, setPortfolio] = useState({});
-  // Simple guest username; in production this comes from auth
+  // Guest username; replace with real auth in production
   const [username] = useState('Guest_' + Math.floor(Math.random() * 9000 + 1000));
-
-  // ---------- watchlist helpers ----------
 
   const addToWatchlist = useCallback((symbol) => {
     setWatchlist((prev) =>
@@ -33,8 +22,6 @@ export const AppProvider = ({ children }) => {
     (symbol) => watchlist.includes(symbol),
     [watchlist]
   );
-
-  // ---------- portfolio helpers ----------
 
   const addToPortfolio = useCallback((symbol, shares) => {
     setPortfolio((prev) => ({
@@ -59,8 +46,6 @@ export const AppProvider = ({ children }) => {
     }
   }, [removeFromPortfolio]);
 
-  // ---------- context value ----------
-
   return (
     <AppContext.Provider
       value={{
@@ -80,10 +65,6 @@ export const AppProvider = ({ children }) => {
   );
 };
 
-/**
- * useApp - hook to consume AppContext.
- * Throws if used outside <AppProvider>.
- */
 export const useApp = () => {
   const ctx = useContext(AppContext);
   if (!ctx) throw new Error('useApp must be used inside <AppProvider>');

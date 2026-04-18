@@ -15,7 +15,6 @@ export default function Navbar() {
 
   return (
     <nav className={styles.navbar}>
-      {/* Brand */}
       <Link to="/" className={styles.brand}>
         <svg
           width="22"
@@ -36,7 +35,6 @@ export default function Navbar() {
         StockPulse
       </Link>
 
-      {/* Nav links */}
       <ul className={styles.links}>
         {navLinks.map(({ to, label, badge }) => (
           <li key={to}>

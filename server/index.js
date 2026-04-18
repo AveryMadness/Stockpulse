@@ -1,15 +1,3 @@
-/**
- * server/index.js
- *
- * Express + Socket.io chat server for StockPulse.
- *
- * Start with:   node server/index.js
- * Default port: 3001  (set PORT env var to override)
- *
- * Dependencies (install with):
- *   npm install express socket.io cors
- */
-
 const express = require('express');
 const http    = require('http');
 const { Server } = require('socket.io');
@@ -30,7 +18,6 @@ const io = new Server(server, {
 app.use(cors({ origin: CLIENT_ORIGIN }));
 app.use(express.json());
 
-// ── In-memory room store ─────────────────────────────────────────
 // Each room: { users: [{ id, username }], messages: [...] }
 const rooms = {};
 
@@ -41,7 +28,6 @@ function getOrCreateRoom(roomId) {
   return rooms[roomId];
 }
 
-// ── REST: list all active rooms ──────────────────────────────────
 app.get('/api/rooms', (req, res) => {
   const list = Object.entries(rooms).map(([id, data]) => ({
     id,
@@ -51,27 +37,20 @@ app.get('/api/rooms', (req, res) => {
   res.json(list);
 });
 
-// ── Socket.io events ─────────────────────────────────────────────
 io.on('connection', (socket) => {
   console.log(`[socket] connected  ${socket.id}`);
 
-  /**
-   * join_room - client joins a chat room.
-   * Payload: { roomId: string, username: string }
-   */
   socket.on('join_room', ({ roomId, username }) => {
     socket.join(roomId);
 
     const room = getOrCreateRoom(roomId);
 
-    // Remove stale entry for this socket (reconnect case)
+    // Remove stale entry for this socket in case of reconnect
     room.users = room.users.filter((u) => u.id !== socket.id);
     room.users.push({ id: socket.id, username });
 
-    // Send message history to the joining client
     socket.emit('room_history', room.messages);
 
-    // Broadcast presence to the room
     io.to(roomId).emit('user_joined', {
       username,
       userCount: room.users.length,
@@ -80,13 +59,6 @@ io.on('connection', (socket) => {
     console.log(`[socket] ${username} joined room "${roomId}" (${room.users.length} online)`);
   });
 
-  /**
-   * send_message - broadcast a message to a room.
-   * Payload: {
-   *   roomId:  string,
-   *   message: { username, text, type: 'text'|'link'|'image', timestamp }
-   * }
-   */
   socket.on('send_message', ({ roomId, message }) => {
     const room = getOrCreateRoom(roomId);
 
@@ -98,7 +70,7 @@ io.on('connection', (socket) => {
       timestamp: message.timestamp || new Date().toISOString(),
     };
 
-    // Keep a capped history (last 200 messages per room)
+    // Cap history at 200 messages per room
     room.messages.push(msg);
     if (room.messages.length > 200) {
       room.messages = room.messages.slice(-200);
@@ -107,10 +79,6 @@ io.on('connection', (socket) => {
     io.to(roomId).emit('receive_message', msg);
   });
 
-  /**
-   * leave_room - client explicitly leaves a room.
-   * Payload: { roomId: string, username: string }
-   */
   socket.on('leave_room', ({ roomId, username }) => {
     socket.leave(roomId);
 
@@ -127,9 +95,6 @@ io.on('connection', (socket) => {
     console.log(`[socket] ${username} left room "${roomId}"`);
   });
 
-  /**
-   * disconnect - clean up user from all rooms on disconnect.
-   */
   socket.on('disconnect', (reason) => {
     console.log(`[socket] disconnected ${socket.id} (${reason})`);
 
@@ -146,7 +111,6 @@ io.on('connection', (socket) => {
   });
 });
 
-// ── Start server ─────────────────────────────────────────────────
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log(`StockPulse chat server running on http://localhost:${PORT}`);

@@ -12,7 +12,6 @@ export default function StockCard({ symbol, quote, history = [], companyName }) 
   const isPositive = formatted.change >= 0;
   const changeClass = isPositive ? styles.positive : styles.negative;
 
-  // Sparkline only needs the close values
   const sparkData = history.slice(-14).map((d) => ({ close: d.close }));
 
   return (
@@ -24,7 +23,6 @@ export default function StockCard({ symbol, quote, history = [], companyName }) 
       onKeyDown={(e) => e.key === 'Enter' && navigate(`/stock/${symbol}`)}
       aria-label={`View details for ${symbol}`}
     >
-      {/* Header */}
       <div className={styles.header}>
         <div>
           <span className={styles.symbol}>{symbol}</span>
@@ -43,7 +41,6 @@ export default function StockCard({ symbol, quote, history = [], companyName }) 
         </div>
       </div>
 
-      {/* Sparkline */}
       {sparkData.length > 1 && (
         <div className={styles.sparkline}>
           <ResponsiveContainer width="100%" height={48}>
