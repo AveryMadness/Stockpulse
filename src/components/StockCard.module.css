@@ -1,0 +1,71 @@
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px 10px;
+  cursor: pointer;
+  transition: border-color 0.1s;
+  outline: none;
+}
+
+.card:hover,
+.card:focus-visible {
+  border-color: var(--color-muted);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.symbol {
+  display: block;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.name {
+  display: block;
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+.priceBlock {
+  text-align: right;
+}
+
+.price {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.positive {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-green);
+  margin-top: 2px;
+}
+
+.negative {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-red);
+  margin-top: 2px;
+}
+
+.sparkline {
+  margin-top: 4px;
+}

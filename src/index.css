@@ -1,0 +1,134 @@
+/* global styles */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-bg:       #111;
+  --color-surface:  #191919;
+  --color-elevated: #222;
+  --color-border:   #2d2d2d;
+  --color-primary:  #a0a8ff;
+  --color-green:    #4ade80;
+  --color-red:      #f87171;
+  --color-yellow:   #fbbf24;
+  --color-text:     #f0f0f0;
+  --color-muted:    #666;
+
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --radius:    5px;
+  --radius-lg: 8px;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+input, textarea, select {
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  background: var(--color-elevated);
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 500;
+  transition: border-color 0.1s;
+}
+
+.btn:hover {
+  border-color: var(--color-muted);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #111;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: #b8bdff;
+  border-color: #b8bdff;
+}
+
+.btn-danger {
+  background: transparent;
+  border-color: var(--color-red);
+  color: var(--color-red);
+}
+
+.btn-danger:hover {
+  background: rgba(248,113,113,0.08);
+}
+
+.price-positive {
+  color: var(--color-green);
+  font-family: var(--font-mono);
+}
+
+.price-negative {
+  color: var(--color-red);
+  font-family: var(--font-mono);
+}
+
+.price-neutral {
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+}
+
+.badge-breaking {
+  display: inline-block;
+  background: var(--color-red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
