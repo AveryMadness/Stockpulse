@@ -1,0 +1,29 @@
+services:
+  # Backend: Socket.io chat server
+  - type: web
+    name: stockpulse-server
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 3001
+      - key: CLIENT_ORIGIN
+        sync: false  # Set this to your Vercel frontend URL after deploying
+
+  # Frontend: Vite/React app
+  - type: web
+    name: stockpulse-frontend
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_FINNHUB_KEY
+        sync: false  # Paste your Finnhub API key in the Render dashboard
+      - key: VITE_SOCKET_URL
+        sync: false  # Set this to your stockpulse-server URL after deploying
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
